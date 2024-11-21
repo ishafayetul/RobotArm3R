@@ -109,6 +109,8 @@ class ArmController(ArmModel):
             setattr(self, f'{link}CurrentAngle', getattr(self, f'{link}CurrentAngle') + direction * 0.5)
             self.transformations(self.link1CurrentAngle, self.link2CurrentAngle, self.link3CurrentAngle)
             self.publishArmPose()
+            self.vis.poll_events()
+            self.vis.update_renderer()
 
     def setInitialPos(self, theta1, theta2, theta3):
         """Set the initial joint angles and update pose."""
@@ -149,7 +151,7 @@ class ArmController(ArmModel):
         return self.link1CurrentAngle, self.link2CurrentAngle, self.link3CurrentAngle
 
     def publishArmPose(self):
-        """Publish the arm pose to a JSON file."""
+        """Publish the arm pose to a JSON file so that GUI can read it."""
         fileLocation = "config/ArmPose.json"
         with FileLock(fileLocation + ".lock"):
             with open(fileLocation, "r") as file:
