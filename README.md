@@ -1,6 +1,6 @@
 # Robotic Arm Simulation
 Created a 4 DOF Arm including 4 revolute Joints. However, I have created another Arm including 3 joints.
-![Robotic Arm](robotic_arm.png)
+![Robotic Arm](RoboticArm4R.png)
 ## Key Concepts
 ### Visualization
 To simulate the robotic arm, a 3D renderer tool is required. In this case, Python's **Open3D** is used to create the entire 3D simulation. Open3D does not have built-in animation functionality, so after moving each link of the arm, the previous link is deleted, and a new link is created at a new position calculated by **Forward Kinematics** (FK) and **Inverse Kinematics** (IK).
