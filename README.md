@@ -1,5 +1,5 @@
 # Robotic Arm Simulation
-Created a 3 DOF Arm including 3 revolute Joints. However, I have created another Arm including 4 joints.
+Created a 3 DOF Arm including 3 revolute Joints. However, I have created another [Arm including 4 joints](https://github.com/ishafayetul/RobotArm4R)
 ![Robotic Arm](./RoboticArm3R.png)
 ## Key Concepts
 ### Visualization
