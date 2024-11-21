@@ -16,7 +16,7 @@ Simplifying the equations leads to four key equations:
 1. a1 = np.arctan2(x, z)
 2. a2 = np.arccos((y - l1 + l3) / l2)
 3. a3_deg = 180 - a2_deg
-4. 
+   
 A separate **Solver.py** function is implemented to compute the angles of the four joints based on these equations.
 
 ### Roll-Pitch-Yaw (RPY)
