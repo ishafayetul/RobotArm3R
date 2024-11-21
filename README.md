@@ -1,5 +1,6 @@
 # Robotic Arm Simulation
-Created a 3 DOF Arm including 3 revolute Joints. However, I have created another Arm including 4 joints.
+Created a 4 DOF Arm including 4 revolute Joints. However, I have created another Arm including 3 joints.
+![Robotic Arm](robotic_arm.png)
 ## Key Concepts
 ### Visualization
 To simulate the robotic arm, a 3D renderer tool is required. In this case, Python's **Open3D** is used to create the entire 3D simulation. Open3D does not have built-in animation functionality, so after moving each link of the arm, the previous link is deleted, and a new link is created at a new position calculated by **Forward Kinematics** (FK) and **Inverse Kinematics** (IK).
@@ -8,16 +9,17 @@ To simulate the robotic arm, a 3D renderer tool is required. In this case, Pytho
 Forward kinematics can be implemented in various ways, such as using Denavit-Hartenberg (DH) parameters. However, a simpler approach using **Homogeneous Matrix Multiplication** is employed to calculate the position of the **End Effector**. Though computationally expensive, this approach is manageable by converting the link pose into a quaternion format.
 
 ### Inverse Kinematics
-To pick an object on the table, the roll of the end effector should be set to 180 degrees. This implies that the sum of the angles of **Link2** and **Link3** must be 180 degrees, and the base rotational angle does not affect this. By multiplying the homogeneous matrices for each joint (**H1, H2, H3, H4**), we get the final homogeneous matrix that corresponds to the end effector's position.
+To pick an object on the table, the roll of the end effector should be set to 180 degrees. This implies that the sum of the angles of **Link2**, **Link3** and **Link4** must be 180 degrees, and the base rotational angle does not affect this. By multiplying the homogeneous matrices for each joint (**H1, H2, H3, H4, H5**), we get the final homogeneous matrix that corresponds to the end effector's position.
 
-Simplifying the equations leads to three key equations:
+Simplifying the equations leads to four key equations:
 
-1. angle2+angle3=180
-2. angle1= tanInverse(x/z)
-3. angle2= cosInverse(( y- l1+l3)/l2)
+1. eq1 = np.tan(np.radians(a1)) - (x / z)
+2. eq2 = a2 + a3 + a4 - 180
+3. eq3 = l2 * np.cos(np.radians(a2)) - l3 * np.cos(np.radians(a4)) - (y + l4 - l1)
+4. eq4 = l3 * np.sin(np.radians(a4)) + l2 * np.sin(np.radians(a2)) - ((z / np.cos(np.radians(a1))) + l4)
+These equations are solved numerically using initial guess.
 
-
-A separate **Solver.py** function is implemented to compute the angles of the three joints based on these equations.
+A separate **Solver.py** function is implemented to compute the angles of the four joints based on these equations.
 
 ### Roll-Pitch-Yaw (RPY)
 - **Roll**: Rotation around the x-axis. ψ=atan2(R21​,R11​)
@@ -50,6 +52,9 @@ This directory contains Python scripts that handle the kinematic calculations fo
 - **FK.py**: Implements the forward kinematics for the robotic arm.
 - **IK.py**: Implements the inverse kinematics for the robotic arm.
 - **Solver3R.py**: Solves the kinematic equations for a 3R robotic arm (3 Revolute joints).
+- 
+### allPossiblePoints
+It generates a graph of all possible end effector accessible points
 
 ### ControlPanel.py
 
@@ -126,7 +131,7 @@ When you run the program, a GUI window will appear with buttons to control the r
 The GUI will display:
 
 - **Roll, Pitch, Yaw**: The current orientation of the robot arm.
-- **Angle1, Angle2, Angle3**: The current joint angles of the robot arm.
+- **Angle1, Angle2, Angle3, Angle4**: The current joint angles of the robot arm.
 
 The GUI allows you to control the robot via the Play and Reset buttons.
 
